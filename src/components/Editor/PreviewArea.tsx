@@ -25,12 +25,16 @@ export const PreviewArea = () => {
   const visibleControls = useStore((state) => state.visibleControls);
   const activePanel = useStore((state) => state.activePanel);
   const setActivePanel = useStore((state) => state.setActivePanel);
+  const selectTextArea = useStore((state) => state.selectTextArea);
 
   const template = templates.find((t) => t.id === selectedTemplateId);
   if (!template) return null;
 
   return (
-    <div className="relative flex h-full min-h-[420px] w-full overflow-auto bg-[#f5f7fb] p-4 sm:p-8">
+    <div
+      className="relative flex h-full min-h-[420px] w-full overflow-auto bg-[#f5f7fb] p-4 sm:p-8"
+      onClick={() => selectTextArea(null)}
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(226,232,240,0.75),_transparent_38%),linear-gradient(180deg,_rgba(255,255,255,0.4),_rgba(226,232,240,0.28))]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:28px_28px]" />
       <div className="relative flex min-h-full w-full items-start justify-center pt-16">

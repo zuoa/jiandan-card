@@ -969,6 +969,9 @@ export const CardRenderer = forwardRef<HTMLDivElement, CardRendererProps>(
     ref
   ) => {
     const updateContent = useStore((state) => state.updateContent);
+    const selectedTextAreaId = useStore((state) => state.selectedTextAreaId);
+    const selectTextArea = useStore((state) => state.selectTextArea);
+    const textAreaStyleOverrides = useStore((state) => state.textAreaStyleOverrides);
 
     const { layout } = template;
     const effectiveAspectRatio =
@@ -1013,6 +1016,11 @@ export const CardRenderer = forwardRef<HTMLDivElement, CardRendererProps>(
           className
         )}
         style={rootStyle}
+        onClick={() => {
+          if (editable) {
+            selectTextArea(null);
+          }
+        }}
       >
         <div
           className="pointer-events-none absolute inset-0"
@@ -1040,26 +1048,38 @@ export const CardRenderer = forwardRef<HTMLDivElement, CardRendererProps>(
 
           const text = content[textArea.id] ?? textArea.defaultText;
           const areaStyle = textArea.style || {};
-          const baseFontSize = areaStyle.fontSize || style.fontSize;
-          const scaledFontSize = baseFontSize * style.fontSizeScale * fontScale;
-          const lineHeight =
-            (areaStyle.lineHeight || style.lineHeight) + style.lineHeightOffset / 100;
+          const areaOverrides = textAreaStyleOverrides[textArea.id] || {};
+          const mergedAreaStyle = { ...areaStyle, ...areaOverrides };
+          const hasAreaFontOverride = areaOverrides.fontFamily !== undefined;
+          const hasAreaFontSizeOverride = areaOverrides.fontSize !== undefined;
+          const hasAreaLineHeightOverride = areaOverrides.lineHeight !== undefined;
+          const baseFontSize = mergedAreaStyle.fontSize || style.fontSize;
+          const scaledFontSize =
+            baseFontSize *
+            (hasAreaFontSizeOverride ? 1 : style.fontSizeScale) *
+            fontScale;
+          const lineHeight = hasAreaLineHeightOverride
+            ? mergedAreaStyle.lineHeight || style.lineHeight
+            : (mergedAreaStyle.lineHeight || style.lineHeight) +
+              style.lineHeightOffset / 100;
 
           const textStyle: CSSProperties = {
             position: 'absolute',
             left: (textArea.position.x + paddingDelta) * scaleX,
             top: (textArea.position.y + paddingDelta) * scaleY,
             width: adjustWidth(textArea.width, paddingDelta, scaleX),
-            fontFamily: hasGlobalFontOverride
+            fontFamily: hasAreaFontOverride
+              ? getFontFamily(areaOverrides.fontFamily as string)
+              : hasGlobalFontOverride
               ? getFontFamily(style.fontFamily)
-              : areaStyle.fontFamily
-                ? getFontFamily(areaStyle.fontFamily)
+              : mergedAreaStyle.fontFamily
+                ? getFontFamily(mergedAreaStyle.fontFamily)
                 : getFontFamily(style.fontFamily),
             fontSize: scaledFontSize,
-            fontWeight: areaStyle.fontWeight || 400,
+            fontWeight: mergedAreaStyle.fontWeight || 400,
             lineHeight,
-            textAlign: areaStyle.textAlign || 'left',
-            color: areaStyle.color || style.textColor,
+            textAlign: mergedAreaStyle.textAlign || 'left',
+            color: mergedAreaStyle.color || style.textColor,
             zIndex: 2,
           };
 
@@ -1070,6 +1090,8 @@ export const CardRenderer = forwardRef<HTMLDivElement, CardRendererProps>(
                 id={textArea.id}
                 text={text}
                 onTextChange={updateContent}
+                onSelect={selectTextArea}
+                selected={selectedTextAreaId === textArea.id}
                 style={textStyle}
               />
             );

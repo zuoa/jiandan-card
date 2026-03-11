@@ -63,6 +63,10 @@ export interface CardContent {
   [textAreaId: string]: string;
 }
 
+export interface TextAreaStyleOverrides {
+  [textAreaId: string]: Partial<TextStyle>;
+}
+
 export interface Template {
   id: string;
   name: string;
