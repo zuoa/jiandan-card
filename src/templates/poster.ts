@@ -40,6 +40,21 @@ export const posterTemplate: Template = {
         },
       },
       {
+        id: 'posterBody',
+        type: 'body',
+        position: { x: 30, y: 302 },
+        width: 'calc(100% - 108px)',
+        defaultText: '补一句说明，把观点说完整。',
+        style: {
+          fontFamily: 'system-ui',
+          fontSize: 15,
+          fontWeight: 600,
+          lineHeight: 1.6,
+          textAlign: 'left',
+          color: '#334155',
+        },
+      },
+      {
         id: 'author',
         type: 'subtitle',
         position: { x: 28, y: 454 },
@@ -59,6 +74,7 @@ export const posterTemplate: Template = {
   defaultContent: {
     date: '2026 / 03 / 11',
     title: '普通人做内容\n先学会这3件事',
+    posterBody: '补一句说明，把观点说完整。',
     author: 'JIANDAN CARD',
   },
   style: {
