@@ -1,0 +1,82 @@
+import type { Template } from './types';
+
+export const bookTemplate: Template = {
+  id: 'book',
+  name: '书摘卡片',
+  category: 'book',
+  thumbnail: '',
+  layout: {
+    aspectRatio: '3:4',
+    width: 375,
+    height: 500,
+    textAreas: [
+      {
+        id: 'bookTitle',
+        type: 'title',
+        position: { x: 32, y: 32 },
+        width: 'calc(100% - 64px)',
+        defaultText: '《百年孤独》',
+        style: {
+          fontFamily: 'Noto Serif SC',
+          fontSize: 20,
+          fontWeight: 700,
+          lineHeight: 1.4,
+          textAlign: 'left',
+        },
+      },
+      {
+        id: 'author',
+        type: 'subtitle',
+        position: { x: 32, y: 64 },
+        width: 'calc(100% - 64px)',
+        defaultText: '加西亚·马尔克斯',
+        style: {
+          fontFamily: 'Inter',
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: 1.4,
+          textAlign: 'left',
+        },
+      },
+      {
+        id: 'excerpt',
+        type: 'body',
+        position: { x: 32, y: 110 },
+        width: 'calc(100% - 64px)',
+        defaultText: '多年以后，面对行刑队，奥雷里亚诺·布恩迪亚上校将会回想起父亲带他去见识冰块的那个遥远的下午。',
+        style: {
+          fontFamily: 'Noto Serif SC',
+          fontSize: 16,
+          fontWeight: 400,
+          lineHeight: 1.8,
+          textAlign: 'left',
+        },
+      },
+    ],
+  },
+  defaultContent: {
+    bookTitle: '《百年孤独》',
+    author: '加西亚·马尔克斯',
+    excerpt: '多年以后，面对行刑队，奥雷里亚诺·布恩迪亚上校将会回想起父亲带他去见识冰块的那个遥远的下午。',
+  },
+  style: {
+    fontFamily: 'Noto Serif SC',
+    fontSize: 16,
+    fontSizeScale: 1,
+    lineHeight: 1.8,
+    lineHeightOffset: 0,
+    padding: 32,
+    backgroundColor: '#fef9c3',
+    textColor: '#1f2937',
+  },
+  elementDefaults: {
+    icon: false,
+    icon2: false,
+    date: false,
+    author: true,
+    count: false,
+    qrcode: false,
+    page: true,
+    watermark: true,
+  },
+};
